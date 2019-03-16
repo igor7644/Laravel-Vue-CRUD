@@ -1,5 +1,7 @@
 <template>
-    <h4>alaal</h4>
+    <v-app>
+    
+    </v-app>
 </template>
 
 <script>
