@@ -5,6 +5,7 @@ import Vuetify from 'vuetify';
 import router from './routes';
 
 window.Vue = require('vue');
+window.Event = new Vue();
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
