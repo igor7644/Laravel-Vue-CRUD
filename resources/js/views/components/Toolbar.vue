@@ -16,9 +16,9 @@
                     <v-list-tile-action>
                         <v-icon class="black--text"> {{ link.icon }} </v-icon>
                     </v-list-tile-action>
-                    <v-list-title-content>
+                    <v-list-tile-content>
                         <v-list-tile-title class="black--text"> {{ link.text }} </v-list-tile-title>
-                    </v-list-title-content>
+                    </v-list-tile-content>
                 </v-list-tile>
             </v-list>
         </v-navigation-drawer>
