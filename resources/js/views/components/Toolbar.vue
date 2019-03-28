@@ -1,7 +1,7 @@
 <template>
     <v-app>
         
-        <v-toolbar class="grey lighten-2" flat app>
+        <v-toolbar class="grey lighten-2" fixed app>
             <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>
                 <span class="font-weight-light">LARAVEL + VUE &nbsp </span>
@@ -38,7 +38,7 @@
             return{
                 drawer: false,
                 links: [
-                    {icon: 'dashboard', text: 'Dashboard', route: '/home'},
+                    {icon: 'dashboard', text: 'Dashboard', route: '/dashboard'},
                     {icon: 'person', text: 'Users', route: '/users'},
                     {icon: 'list', text: 'Posts', route: '/posts'}
                 ]
