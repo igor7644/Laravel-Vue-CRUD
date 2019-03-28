@@ -1,7 +1,7 @@
 <template>
     <v-app>
-
-        <v-toolbar flat class="grey lighten-2">
+        
+        <v-toolbar class="grey lighten-2" flat app>
             <v-toolbar-side-icon @click="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>
                 <span class="font-weight-light">LARAVEL + VUE &nbsp </span>
@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
         </v-toolbar>
 
-        <v-navigation-drawer v-model="drawer" class="blue darken-2">
+        <v-navigation-drawer v-model="drawer" class="blue darken-2" app>
             <v-list>
                 <v-list-tile v-for="link in links" :key="link.text" router :to="link.route">
                     <v-list-tile-action>
@@ -23,11 +23,15 @@
             </v-list>
         </v-navigation-drawer>
 
+        <v-content>
+            <router-view></router-view>
+        </v-content>
+
     </v-app>
 </template>
 
 <script>
-    
+
     export default {
         
         data(){
