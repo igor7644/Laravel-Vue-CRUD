@@ -2,8 +2,8 @@ import VueRouter from 'vue-router';
 
 let routes = [
     {
-        path: "/home",
-        component: require('./views/Home.vue').default
+        path: "/dashboard",
+        component: require('./views/Dashboard.vue').default
     },
     {
         path: "/users",
