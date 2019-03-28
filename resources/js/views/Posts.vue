@@ -1,8 +1,8 @@
 <template>
     <v-app>
-        
-        <h1 class="blue--text">TEST</h1> 
-        
+
+        <h2 class="blue--text">POSTS</h2>
+
     </v-app>
 </template>
 
