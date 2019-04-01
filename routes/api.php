@@ -8,5 +8,7 @@ Route::middleware('api')->group(function () {
         return view('welcome');
     });
 
+    Route::get('/users', 'UserController@index');
+
 });
 
