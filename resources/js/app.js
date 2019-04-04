@@ -10,7 +10,12 @@ window.Vue = require('vue');
 window.Event = new Vue();
 
 Vue.use(VueRouter);
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    iconfont: 'md',
+    theme: {
+        primary: '#039BE5'
+    }
+  });
 
 const app = new Vue({
     el: '#app',
