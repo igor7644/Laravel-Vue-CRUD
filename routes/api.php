@@ -9,6 +9,7 @@ Route::middleware('api')->group(function () {
     });
 
     Route::get('/users', 'UserController@index');
+    Route::post('/user/{user}/destroy', 'UserController@destroy');
 
 });
 
