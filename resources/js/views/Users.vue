@@ -177,10 +177,23 @@
                     .catch(function(error){
 
                     });
-                    
                 }
                 else {
-                    
+
+                    axios.post('api/user/create', {
+                        user: self.editedUser
+                    })
+
+                    .then(function(response){
+                        console.log(response);
+                        let message = response.data.message;
+                        let user = response.data.user;
+                        self.users.push(user);
+                        Event.$emit('user-added', message);
+                    })
+                    .catch(function(error){
+
+                    });
                 }
                 self.close();
             },
