@@ -17,7 +17,9 @@
             flat
             @click="snackbar = false"
       >
-        Close
+        <i class="material-icons">
+            close
+        </i>
       </v-btn>
     </v-snackbar>
     </v-app>
@@ -33,7 +35,7 @@
                 y: 'bottom',
                 x: null,
                 mode: '',
-                timeout: 4000,
+                timeout: 5000,
                 text: ''
             }
         },
@@ -42,6 +44,11 @@
             let self = this;
 
             Event.$on('user-deleted', function(message){
+                self.text = message;
+                self.snackbar = true;
+            });
+
+            Event.$on('user-edited', function(message){
                 self.text = message;
                 self.snackbar = true;
             });
