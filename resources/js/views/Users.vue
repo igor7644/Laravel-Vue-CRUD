@@ -189,7 +189,7 @@
                         let message = response.data.message;
                         let user = response.data.user;
                         self.users.push(user);
-                        Event.$emit('user-added', message);
+                        Event.$emit('user-created', message);
                     })
                     .catch(function(error){
 
