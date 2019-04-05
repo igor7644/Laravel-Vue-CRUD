@@ -1773,6 +1773,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {};
@@ -1912,12 +1963,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       users: [],
       dialog: false,
+      show: false,
+      rules: {
+        required: function required(value) {
+          return !!value || 'Required';
+        },
+        counter: function counter(value) {
+          return value.length <= 15 || 'Maximum 15 characters';
+        },
+        counter_password: function counter_password(value) {
+          return value.length >= 6 || 'Minimum 6 characters';
+        }
+      },
       headers: [{
         text: 'ID',
         value: 'id'
@@ -1978,11 +2048,41 @@ __webpack_require__.r(__webpack_exports__);
         _this.editedIndex = -1;
       }, 300);
     },
-    save: function save() {},
-    editUser: function editUser(item) {
+    fillUser: function fillUser(item) {
       this.dialog = true;
       this.editedIndex = this.users.indexOf(item);
       this.editedUser = Object.assign({}, item);
+    },
+    save: function save() {
+      var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+      var self = this;
+
+      if (self.editedUser.id == null) {
+        self.dialog = true;
+      }
+
+      if (self.editedIndex > -1) {
+        var id = self.editedUser.id;
+        axios.post('api/user/' + id + '/edit', {
+          user: self.editedUser
+        }).then(function (response) {
+          var message = response.data.message;
+          Object.assign(self.users[self.editedIndex], self.editedUser);
+          Event.$emit('user-edited', message);
+          self.close();
+        }).catch(function (error) {});
+      } else {
+        axios.post('api/user/create', {
+          user: self.editedUser
+        }).then(function (response) {
+          var message = response.data.message;
+          var user = response.data.user;
+          self.users.push(user);
+          Event.$emit('user-created', message);
+          self.close();
+        }).catch(function (error) {});
+      }
     },
     deleteUser: function deleteUser(item) {
       var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -2042,6 +2142,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2049,13 +2151,21 @@ __webpack_require__.r(__webpack_exports__);
       y: 'bottom',
       x: null,
       mode: '',
-      timeout: 4000,
+      timeout: 5000,
       text: ''
     };
   },
   mounted: function mounted() {
     var self = this;
     Event.$on('user-deleted', function (message) {
+      self.text = message;
+      self.snackbar = true;
+    });
+    Event.$on('user-edited', function (message) {
+      self.text = message;
+      self.snackbar = true;
+    });
+    Event.$on('user-created', function (message) {
       self.text = message;
       self.snackbar = true;
     });
@@ -2073,6 +2183,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2646,9 +2762,139 @@ var render = function() {
   return _c(
     "v-app",
     [
-      _c("v-container", { staticClass: "my-5" }, [
-        _c("h1", { staticClass: "blue--text" }, [_vm._v("DASHBOARD")])
-      ])
+      _c(
+        "v-container",
+        { staticClass: "my-5" },
+        [
+          _c("v-layout", { attrs: { "pa-2": "" } }, [
+            _c("h1", [_vm._v("Welcome to CRUD SPA!")])
+          ]),
+          _vm._v(" "),
+          _c("v-layout", { attrs: { "pa-2": "" } }, [
+            _c("h2", [_vm._v("Choose bellow:")])
+          ]),
+          _vm._v(" "),
+          _c(
+            "v-layout",
+            { attrs: { row: "" } },
+            [
+              _c(
+                "v-flex",
+                { staticClass: "text-center ma-5" },
+                [
+                  _c(
+                    "v-card",
+                    { staticClass: "primary", attrs: { hover: "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { "justify-center": "" } },
+                        [
+                          _c(
+                            "v-card-title",
+                            { attrs: { "primary-title": "" } },
+                            [
+                              _c("div", [
+                                _c("div", { staticClass: "headline" }, [
+                                  _vm._v("Users")
+                                ]),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Explore all users")])
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c(
+                            "v-btn",
+                            { attrs: { color: "white", to: "/users" } },
+                            [
+                              _vm._v(
+                                " \n                            Explore \n                            "
+                              ),
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v(
+                                  "\n                            keyboard_arrow_right\n                            "
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "v-flex",
+                { staticClass: "text-center ma-5" },
+                [
+                  _c(
+                    "v-card",
+                    { staticClass: "primary", attrs: { hover: "" } },
+                    [
+                      _c(
+                        "v-layout",
+                        { attrs: { "justify-center": "" } },
+                        [
+                          _c(
+                            "v-card-title",
+                            { attrs: { "primary-title": "" } },
+                            [
+                              _c("div", [
+                                _c("div", { staticClass: "headline" }, [
+                                  _vm._v("Posts")
+                                ]),
+                                _vm._v(" "),
+                                _c("span", [_vm._v("Explore all posts")])
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c(
+                            "v-btn",
+                            { attrs: { color: "white", to: "/posts" } },
+                            [
+                              _vm._v(
+                                " \n                            Explore \n                            "
+                              ),
+                              _c("i", { staticClass: "material-icons" }, [
+                                _vm._v(
+                                  "\n                            keyboard_arrow_right\n                            "
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
     ],
     1
   )
@@ -2728,7 +2974,7 @@ var render = function() {
                   _c(
                     "v-dialog",
                     {
-                      attrs: { persistent: "", dark: "", "max-width": "900px" },
+                      attrs: { persistent: "", "max-width": "900px" },
                       scopedSlots: _vm._u([
                         {
                           key: "activator",
@@ -2797,7 +3043,10 @@ var render = function() {
                                         },
                                         [
                                           _c("v-text-field", {
-                                            attrs: { label: "Name" },
+                                            attrs: {
+                                              rules: [_vm.rules.required],
+                                              label: "Name"
+                                            },
                                             model: {
                                               value: _vm.editedUser.name,
                                               callback: function($$v) {
@@ -2821,7 +3070,13 @@ var render = function() {
                                         },
                                         [
                                           _c("v-text-field", {
-                                            attrs: { label: "Username" },
+                                            attrs: {
+                                              rules: [
+                                                _vm.rules.required,
+                                                _vm.rules.counter
+                                              ],
+                                              label: "Username"
+                                            },
                                             model: {
                                               value: _vm.editedUser.username,
                                               callback: function($$v) {
@@ -2845,7 +3100,10 @@ var render = function() {
                                         },
                                         [
                                           _c("v-text-field", {
-                                            attrs: { label: "E-mail" },
+                                            attrs: {
+                                              rules: [_vm.rules.required],
+                                              label: "E-mail"
+                                            },
                                             model: {
                                               value: _vm.editedUser.email,
                                               callback: function($$v) {
@@ -2869,7 +3127,24 @@ var render = function() {
                                         },
                                         [
                                           _c("v-text-field", {
-                                            attrs: { label: "Password" },
+                                            attrs: {
+                                              "append-icon": _vm.show
+                                                ? "visibility"
+                                                : "visibility_off",
+                                              type: _vm.show
+                                                ? "text"
+                                                : "password",
+                                              rules: [
+                                                _vm.rules.required,
+                                                _vm.rules.counter_password
+                                              ],
+                                              label: "Password"
+                                            },
+                                            on: {
+                                              "click:append": function($event) {
+                                                _vm.show = !_vm.show
+                                              }
+                                            },
                                             model: {
                                               value: _vm.editedUser.password,
                                               callback: function($$v) {
@@ -2993,7 +3268,7 @@ var render = function() {
                                                 },
                                                 on: {
                                                   click: function($event) {
-                                                    return _vm.editUser(
+                                                    return _vm.fillUser(
                                                       props.item
                                                     )
                                                   }
@@ -3157,7 +3432,11 @@ var render = function() {
                 }
               }
             },
-            [_vm._v("\n    Close\n  ")]
+            [
+              _c("i", { staticClass: "material-icons" }, [
+                _vm._v("\n        close\n    ")
+              ])
+            ]
           )
         ],
         1
@@ -3266,7 +3545,27 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _c("v-content", [_c("router-view")], 1)
+      _c("v-content", [_c("router-view")], 1),
+      _vm._v(" "),
+      _c(
+        "v-footer",
+        {
+          staticClass: "pa-3",
+          attrs: { app: "", color: "#E0E0E0", height: "20" }
+        },
+        [
+          _c("v-layout", { attrs: { "justify-center": "" } }, [
+            _c("div", [
+              _vm._v(
+                "© " +
+                  _vm._s(new Date().getFullYear()) +
+                  " - Igor Milosavljević"
+              )
+            ])
+          ])
+        ],
+        1
+      )
     ],
     1
   )
