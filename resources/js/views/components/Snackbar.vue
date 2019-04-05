@@ -52,6 +52,11 @@
                 self.text = message;
                 self.snackbar = true;
             });
+
+            Event.$on('user-created', function(message){
+                self.text = message;
+                self.snackbar = true;
+            });
         }
 
     }
