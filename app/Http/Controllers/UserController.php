@@ -32,4 +32,15 @@ class UserController extends Controller
             'message' => 'User successfully edited!'
         ]);
     }
+
+    public function create()
+    {
+        $data = request()->user;
+        $user = new User($data);
+        $user->save();
+        return response()->json([
+            'user' => $user,
+            'message' => 'User Successfully added!'
+        ]);
+    }
 }
