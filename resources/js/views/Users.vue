@@ -7,7 +7,7 @@
                 <v-toolbar flat color="white">
                 <v-toolbar-title>USERS</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-dialog persistent dark v-model="dialog" max-width="900px">
+                <v-dialog persistent v-model="dialog" max-width="900px">
                     <template v-slot:activator="{ on }">
                         <v-btn color="primary" dark fab small class="mt-4" v-on="on">
                             <i class="material-icons">
@@ -62,7 +62,7 @@
                     <td class="justify-center px-0">
                         <v-tooltip right>
                             <template v-slot:activator="{ on }">
-                                <v-btn color="primary" small round dark @click="editUser(props.item)" v-on="on">
+                                <v-btn color="primary" small round dark @click="fillUser(props.item)" v-on="on">
                                     <v-icon size="20">
                                         edit    
                                     </v-icon>
@@ -152,14 +152,37 @@
                 }, 300)
             },
 
-            save(){
-
-            },
-
-            editUser(item){
+            fillUser(item){
                 this.dialog = true;
                 this.editedIndex = this.users.indexOf(item);
                 this.editedUser = Object.assign({}, item);
+            },
+
+            save(){
+                const axios = require('axios');
+                let self = this;
+
+                if(self.editedIndex > -1){
+                    let id = self.editedUser.id;
+
+                    axios.post('api/user/'+id+'/edit', {
+                        user: self.editedUser
+                    })
+
+                    .then(function(response){
+                        let message = response.data.message;
+                        Object.assign(self.users[self.editedIndex], self.editedUser);
+                        Event.$emit('user-edited', message);
+                    })
+                    .catch(function(error){
+
+                    });
+                    
+                }
+                else {
+                    
+                }
+                self.close();
             },
 
             deleteUser(item){
