@@ -27,6 +27,12 @@
             <router-view></router-view>
         </v-content>
 
+        <v-footer class="pa-3" app color="#E0E0E0" height="20">
+            <v-layout justify-center>
+                <div>&copy; {{ new Date().getFullYear() }} - Igor Milosavljević</div>
+            </v-layout>
+        </v-footer>
+
     </v-app>
 </template>
 
