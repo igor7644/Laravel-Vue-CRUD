@@ -19,4 +19,17 @@ class UserController extends Controller
             'message' => 'User successfully removed!'
         ]);
     }
+
+    public function edit($user)
+    {
+        $user = User::find($user);
+        $user->name = request('user.name');
+        $user->username = request('user.username');
+        $user->email = request('user.email');
+        $user->password = md5(request('user.password'));
+        $user->save();
+        return response()->json([
+            'message' => 'User successfully edited!'
+        ]);
+    }
 }
