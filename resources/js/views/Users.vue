@@ -23,16 +23,23 @@
                         <v-container grid-list-md>
                         <v-layout>
                             <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedUser.name" label="Name"></v-text-field>
+                            <v-text-field v-model="editedUser.name" :rules="[rules.required]" label="Name"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedUser.username" label="Username"></v-text-field>
+                            <v-text-field v-model="editedUser.username" :rules="[rules.required, rules.counter]" label="Username"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedUser.email" label="E-mail"></v-text-field>
+                            <v-text-field v-model="editedUser.email" :rules="[rules.required]" label="E-mail"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedUser.password" label="Password"></v-text-field>
+                            <v-text-field 
+                                v-model="editedUser.password" 
+                                :append-icon="show ? 'visibility' : 'visibility_off'" 
+                                @click:append="show = !show" 
+                                :type="show ? 'text' : 'password'" 
+                                :rules="[rules.required, rules.counter_password]" 
+                                label="Password">
+                            </v-text-field>
                             </v-flex>
                         </v-layout>
                         </v-container>
@@ -102,6 +109,12 @@
             return{
                 users: [],
                 dialog: false,
+                show: false,
+                rules: {
+                    required: value => !!value || 'Required',
+                    counter: value => value.length <= 15 || 'Maximum 15 characters',
+                    counter_password: value => value.length >= 6 || 'Minimum 6 characters'
+                },
                 headers: [
                     { text: 'ID', value: 'id' },
                     { text: 'Name', value: 'name' },
@@ -161,6 +174,10 @@
             save(){
                 const axios = require('axios');
                 let self = this;
+                
+                if(self.editedUser.id == null){
+                    self.dialog = true;
+                }
 
                 if(self.editedIndex > -1){
                     let id = self.editedUser.id;
@@ -173,6 +190,7 @@
                         let message = response.data.message;
                         Object.assign(self.users[self.editedIndex], self.editedUser);
                         Event.$emit('user-edited', message);
+                        self.close();
                     })
                     .catch(function(error){
 
@@ -185,17 +203,17 @@
                     })
 
                     .then(function(response){
-                        console.log(response);
                         let message = response.data.message;
                         let user = response.data.user;
                         self.users.push(user);
                         Event.$emit('user-created', message);
+                        self.close();
                     })
                     .catch(function(error){
 
                     });
                 }
-                self.close();
+                
             },
 
             deleteUser(item){
