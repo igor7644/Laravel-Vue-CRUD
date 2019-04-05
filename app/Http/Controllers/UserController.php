@@ -11,4 +11,9 @@ class UserController extends Controller
     {
         return User::all();
     }
+
+    public function destroy($user)
+    {
+        User::destroy($user);
+    }
 }
