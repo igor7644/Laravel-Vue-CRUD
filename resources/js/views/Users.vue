@@ -85,12 +85,16 @@
                 </v-data-table>
             </div>
 
+            <snackbar></snackbar>
+
         </v-container>
 
     </v-app>
 </template>
 
 <script>
+
+    import snackbar from './components/Snackbar'
 
     export default {
         
@@ -166,7 +170,9 @@
 
                 .then(function(response){
                     let index = self.users.indexOf(item);
+                    let message = response.data.message;
                     self.users.splice(index, 1);
+                    Event.$emit('user-deleted', message);
                 })
                 .catch(function(error){
 
@@ -180,6 +186,10 @@
                 return this.editedIndex === -1 ? 'New User' : 'Edit User'
             }
         },
+
+        components: {
+            snackbar
+        }
 
     }
     
