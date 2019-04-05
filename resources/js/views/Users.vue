@@ -16,6 +16,9 @@
                         </v-btn>
                     </template>
                     <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                    </v-card-title>
                     <v-card-text>
                         <v-container grid-list-md>
                         <v-layout>
@@ -155,11 +158,28 @@
                 this.editedUser = Object.assign({}, item);
             },
 
-            deleteUser(){
-                
+            deleteUser(item){
+                const axios = require('axios');
+                let self = this;
+
+                axios.post('api/user/'+item.id+'/destroy')
+
+                .then(function(response){
+                    let index = self.users.indexOf(item);
+                    self.users.splice(index, 1);
+                })
+                .catch(function(error){
+
+                });
             }
 
-        }
+        },
+
+        computed: {
+            formTitle () {
+                return this.editedIndex === -1 ? 'New User' : 'Edit User'
+            }
+        },
 
     }
     
