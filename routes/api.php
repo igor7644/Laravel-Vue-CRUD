@@ -13,5 +13,7 @@ Route::middleware('api')->group(function () {
     Route::post('/user/{user}/edit', 'UserController@edit');
     Route::post('/user/create', 'UserController@create');
 
+    Route::get('/posts', 'PostController@index');
+
 });
 
