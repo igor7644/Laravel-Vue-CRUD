@@ -25,4 +25,26 @@ class PostController extends Controller
             'message' => 'Post successfully removed!'
         ]);
     }
+
+    public function edit($post)
+    {
+        $post = Post::find($post);
+        $post->title = request('post.title');
+        $post->description = request('post.description');
+        $post->user_id = request('post.user_id');
+        $post->save();
+        return response()->json([
+            'message' => 'Post successfully edited!'
+        ]);
+    }
+
+    public function create()
+    {
+        $data = request()->post;
+        $post = new Post($data);
+        $post->save();
+        return response()->json([
+            'message' => 'Post Successfully added!'
+        ]);
+    }
 }
