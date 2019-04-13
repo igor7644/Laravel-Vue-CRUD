@@ -167,6 +167,49 @@
                 this.editedPost = Object.assign({}, item);
             },
 
+            save(){
+                const axios = require('axios');
+                let self = this;
+                
+                if(self.editedPost.id == null){
+                    self.dialog = true;
+                }
+
+                if(self.editedIndex > -1){
+                    let id = self.editedPost.id;
+
+                    axios.post('api/post/'+id+'/edit', {
+                        post: self.editedPost
+                    })
+
+                    .then(function(response){
+                        let message = response.data.message;
+                        Object.assign(self.posts[self.editedIndex], self.editedPost);
+                        Event.$emit('post-edited', message);
+                        self.close();
+                    })
+                    .catch(function(error){
+
+                    });
+                }
+                else {
+
+                    axios.post('api/post/create', {
+                        post: self.editedPost
+                    })
+
+                    .then(function(response){
+                        let message = response.data.message;
+                        Event.$emit('post-created', message);
+                        self.close();
+                    })
+                    .catch(function(error){
+
+                    });
+                }
+                
+            },
+
             deletePost(item){
                 const axios = require('axios');
                 let self = this;
