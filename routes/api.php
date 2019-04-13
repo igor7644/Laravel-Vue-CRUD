@@ -15,6 +15,8 @@ Route::middleware('api')->group(function () {
 
     Route::get('/posts', 'PostController@index');
     Route::post('/post/{post}/destroy', 'PostController@destroy');
+    Route::post('/post/{post}/edit', 'PostController@edit');
+    Route::post('/post/create', 'PostController@create');
 
 });
 
