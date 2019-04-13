@@ -43,6 +43,7 @@
         mounted(){
             let self = this;
 
+            //users
             Event.$on('user-deleted', function(message){
                 self.text = message;
                 self.snackbar = true;
@@ -58,7 +59,18 @@
                 self.snackbar = true;
             });
 
+            //posts
             Event.$on('post-deleted', function(message){
+                self.text = message;
+                self.snackbar = true;
+            });
+
+            Event.$on('post-edited', function(message){
+                self.text = message;
+                self.snackbar = true;
+            });
+
+            Event.$on('post-created', function(message){
                 self.text = message;
                 self.snackbar = true;
             });
