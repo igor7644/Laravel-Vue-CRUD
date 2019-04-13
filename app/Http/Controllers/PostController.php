@@ -12,4 +12,12 @@ class PostController extends Controller
     {
         return Post::with('user')->get();
     }
+
+    public function destroy($post)
+    {
+        Post::destroy($post);
+        return response()->json([
+            'message' => 'Post successfully removed!'
+        ]);
+    }
 }
