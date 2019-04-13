@@ -28,8 +28,13 @@
                             <v-flex xs12 sm6 md4>
                             <v-text-field v-model="editedPost.description" :rules="[rules.required]" label="Description"></v-text-field>
                             </v-flex>
-                            <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedPost.Creator" :rules="[rules.required]" label="Creator"></v-text-field>
+                            <v-flex xs12 sm6>
+                                <v-select
+                                v-model="editedPost.user_id"
+                                :items="editedPost.user_id"
+                                :rules="[rules.required]"
+                                label="Creator"
+                                ></v-select>
                             </v-flex>
                         </v-layout>
                         </v-container>
@@ -114,16 +119,14 @@
                 ],
                 editedIndex: -1,
                 editedPost: {
-                    name: '',
-                    username: '',
-                    email: '',
-                    password: ''
+                    title: '',
+                    description: '',
+                    user_id: ''
                 },
                 defaultItem: {
-                    name: '',
-                    username: '',
-                    email: '',
-                    password: ''
+                    title: '',
+                    description: '',
+                    user_id: ''
                 }
                 }
               },
@@ -153,12 +156,28 @@
             },
 
             fillPost(item){
+                console.log(item);
                 this.dialog = true;
-                this.editedIndex = this.users.indexOf(item);
+                this.editedIndex = this.posts.indexOf(item);
                 this.editedPost = Object.assign({}, item);
-            }
+            },
 
-            
+            deletePost(item){
+                const axios = require('axios');
+                let self = this;
+
+                axios.post('api/post/'+item.id+'/destroy')
+
+                .then(function(response){
+                    let index = self.posts.indexOf(item);
+                    let message = response.data.message;
+                    self.posts.splice(index, 1);
+                    Event.$emit('post-deleted', message);
+                })
+                .catch(function(error){
+
+                });
+            }
 
         },
 
