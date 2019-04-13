@@ -57,6 +57,11 @@
                 self.text = message;
                 self.snackbar = true;
             });
+
+            Event.$on('post-deleted', function(message){
+                self.text = message;
+                self.snackbar = true;
+            });
         }
 
     }
