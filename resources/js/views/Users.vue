@@ -48,7 +48,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat @click="save">Save</v-btn>
+                        <v-btn color="blue darken-1" flat @click="save" :loading="loading">Save</v-btn>
                     </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -110,6 +110,7 @@
                 users: [],
                 dialog: false,
                 show: false,
+                loading: false,
                 rules: {
                     required: value => !!value || 'Required',
                     counter: value => value.length <= 15 || 'Maximum 15 characters',
@@ -181,7 +182,7 @@
 
                 if(self.editedIndex > -1){
                     let id = self.editedUser.id;
-
+                    self.loading = true;
                     axios.post('api/user/'+id+'/edit', {
                         user: self.editedUser
                     })
@@ -190,14 +191,18 @@
                         let message = response.data.message;
                         Object.assign(self.users[self.editedIndex], self.editedUser);
                         Event.$emit('user-edited', message);
+                        self.loading = false;
                         self.close();
                     })
                     .catch(function(error){
-
+                        setTimeout(function(){
+                            self.loading = false;
+                        }, 600);
                     });
                 }
                 else {
 
+                    self.loading = true;
                     axios.post('api/user/create', {
                         user: self.editedUser
                     })
@@ -207,10 +212,13 @@
                         let user = response.data.user;
                         self.users.push(user);
                         Event.$emit('user-created', message);
+                        self.loading = false;
                         self.close();
                     })
                     .catch(function(error){
-
+                        setTimeout(function(){
+                            self.loading = false;
+                        }, 600);
                     });
                 }
                 
