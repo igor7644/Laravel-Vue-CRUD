@@ -31,7 +31,7 @@
                             <v-flex xs12 sm6>
                                 <v-select
                                 v-model="editedPost.user_id"
-                                :items="editedPost.user_id"
+                                :items="defaultItem.user_id"
                                 :rules="[rules.required]"
                                 label="Creator"
                                 ></v-select>
@@ -126,7 +126,7 @@
                 defaultItem: {
                     title: '',
                     description: '',
-                    user_id: ''
+                    user_id: []
                 }
                 }
               },
@@ -138,11 +138,16 @@
             axios.get('api/posts')
 
             .then(function(response){
-                self.posts = response.data;
+                self.posts = response.data.posts;
+                let users =  response.data.users;
+                users.forEach(function(key, value){
+                    self.defaultItem.user_id.push(key['id']);
+                });
             })
             .catch(function(error){
 
             });
+
         },
 
         methods: {

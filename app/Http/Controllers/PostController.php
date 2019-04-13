@@ -10,7 +10,12 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::with('user')->get();
+        $posts = Post::with('user')->get();
+        $users = User::all();
+        return response()->json([
+            'posts' => $posts,
+            'users' => $users
+        ]);
     }
 
     public function destroy($post)
